@@ -7,7 +7,7 @@ import { persistor, store } from "./store"
 import Routes from './routes'
 
 // import 'normalize.css';
-// import './assets/css/app.scss';
+import './assets/css/app.scss';
 // import 'react-dates/initialize'
 
 
