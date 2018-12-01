@@ -8,7 +8,6 @@ module.exports = class EthereumService {
     this.campainAddr = campainAddr
     this.rpc = new Web3(new Web3.providers.HttpProvider(env.endpoints.ethScan, 3000));
     this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
-    console.log("___________________", campainAddr, this.rpc)
     this.contract = new this.rpc.eth.Contract(constants.CONTRACT_ABI, this.campainAddr);
   }
 
@@ -67,6 +66,28 @@ module.exports = class EthereumService {
     var tokenContract = this.erc20Contract
     tokenContract.options.address = sourceToken
     return tokenContract.methods.allowance(owner, this.campainAddr).call()
+  }
+
+  voteData(requestId, isApprove){
+    const data = this.contract.methods.vote(requestId, isApprove)
+    return Promise.resolve(data)
+  }
+
+
+  getPendingRequestId(){
+    return  this.contract.methods.getLastestRequestFundID().call()
+  }
+
+  getPendingStatus(requestId){
+    const data =  this.contract.methods.getVoteStatus(requestId).call()
+    return Promise.resolve(data)
+  }
+
+  dataMakeRequestFund(amount, to, timeEnd){
+    console.log("___________", amount, to, timeEnd)
+    return this.contract.methods.creatorRequestFundTransfer(
+      amount, to, timeEnd
+    ).encodeABI()
   }
 }
 

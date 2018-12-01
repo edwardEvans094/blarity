@@ -7,6 +7,7 @@ import title_project from '../assets/img/title_project.png';
 import content_project from '../assets/img/content_project.png';
 import right_sidebar from '../assets/img/right_sidebar.png';
 import '../assets/css/detail.scss';
+import EthereumService from "../services/ethereum"
 
 const tokensSupport = Object.keys(env.tokens).map(t => ({
   symbol: t,
@@ -30,14 +31,24 @@ Modal.setAppElement('#app')
 class Detail extends Component {
   constructor() {
     super()
-
     this.campaignAddr = utils.getParameterByName('campaignAddr')
+    this.ethereumService = new EthereumService(this.campaignAddr)
     console.log("______+++++++++++++++++", this.campaignAddr)
     this.state = {
       tokenAddr: "",
       amount: 0,
       deligatorAddr: "",
-      modalIsOpen: false
+      modalIsOpen: false,
+      pendingId: null
+    }
+  }
+
+  componentDidMount = async () => {
+    const pendingId = await this.ethereumService.getPendingRequestId()
+    if(pendingId){
+      this.setState({
+        pendingId: pendingId -1
+      })
     }
   }
 
@@ -48,18 +59,27 @@ class Detail extends Component {
     })
   }
 
-  onChangeAmount = (e) => {
-    console.log(e.target.value)
-    this.setState({
-      amount: e.target.value
-    })
+  onConfirm = async (isApprove) => {
+    if(this.state.pendingId){
+      const voteData = await this.ethereumService.voteData(this.state.pendingId, isApprove)
+      const rawVote = utils.createRawTx(0, this.campaignAddr, voteData)
+
+      if(window.web3){
+        window.web3.eth.sendTransaction(rawDonate, (err, txhash) => {
+          if(err) alert(err)
+          else alert("Transaction broadcasted to network")
+        })
+      } else {
+        alert("Metamask not install")
+      }
+  
+    }
   }
 
-  onChangeDeligator = (e) => {
-    console.log(e.target.value)
-    this.setState({
-      deligatorAddr: e.target.value
-    })
+  onReject = () => {
+    if(this.state.pendingId){
+
+    }
   }
 
   openModal = () =>  {
@@ -91,8 +111,8 @@ class Detail extends Component {
               <div className="d-inline-block">Due Date: 22 Jan 2019</div>
               <div className="mt-1">Due Date: 22 Jan 2019</div>
               <div className="group-btn">
-                <button className="h-btn mr-3">Reject</button>
-                <button className="h-btn h-blue">Accept</button>
+                <button className="h-btn mr-3" onClick={this.onConfirm(false)}>Reject</button>
+                <button className="h-btn h-blue" onClick={this.onConfirm(true)}>Accept</button>
               </div>
             </div>
             <div className="d-flex justify-content-between balance-area">

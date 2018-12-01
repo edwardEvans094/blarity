@@ -8,6 +8,7 @@ import content_project from '../assets/img/content_project.png';
 import right_sidebar from '../assets/img/right_sidebar.png';
 import '../assets/css/detail.scss';
 import EthereumService from "../services/ethereum"
+
 const tokensSupport = Object.keys(env.tokens).map(t => ({
   symbol: t,
   name: env.tokens[t].name,
@@ -40,8 +41,24 @@ class DetailForDao extends Component {
     this.state = {
       selectedToken: "ETH",
       amount: 0,
-      deligatorAddr: "",
-      modalIsOpen: false
+      destAddr: "",
+      modalIsOpen: false,
+      pendingId: null,
+      timeEnd: null
+    }
+  }
+
+  componentDidMount = async () => {
+    const pendingId = await this.ethereumService.getPendingRequestId()
+    console.log("++++++++++++", pendingId)
+    if(pendingId){
+      const statusPending = await this.ethereumService.getPendingStatus(pendingId - 1)
+      this.setState({
+        pendingId: {
+          id: pendingId -1,
+          status: statusPending
+        }
+      })
     }
   }
 
@@ -53,9 +70,22 @@ class DetailForDao extends Component {
   }
 
   onChangeAmount = (e) => {
-    console.log(e.target.value)
     this.setState({
       amount: e.target.value
+    })
+  }
+
+  onChangeTime = (e) => {
+
+    this.setState({
+      timeEnd: new Date(e.target.value).getTime() / 1000
+    })
+  }
+
+  onChangeDest = (e) => {
+    console.log(e.target.value)
+    this.setState({
+      destAddr: e.target.value
     })
   }
 
@@ -70,25 +100,32 @@ class DetailForDao extends Component {
     this.setState({modalIsOpen: true});
   }
 
+  onRequestFund = () => {
+    if(!this.state.pendingId){
+      const DAI = env.tokens['DAI']
+      const tokenAmount = utils.toTWei(this.state.amount, DAI.decimal)
+      console.log("++++++++++++++++++", tokenAmount, this.state.destAddr, this.state.timeEnd)
+      const dataMakeRequest = this.ethereumService.dataMakeRequestFund(tokenAmount, this.state.destAddr, this.state.timeEnd)
+      const rawRequest = utils.createRawTx(0, this.campaignAddr, dataMakeRequest)
+      if(window.web3){
+        window.web3.eth.sendTransaction(rawRequest, (err, txhash) => {
+          if(err) alert(err)
+          else alert("Transaction broadcasted to network")
+        })
+      } else {
+        alert("Metamask not install")
+      }
+  
+    }
+  }
+
+  onClaim = () => {
+
+  }
+
   onSubmit = async (e) => {
     e.preventDefault()
-    const tokenObj = env.tokens[this.state.selectedToken]
-    const selectedTokenAddr = tokenObj.address
-    const tokenTAmount = utils.toTWei(this.state.amount, tokenObj.decimal)
-    const contributeData = await this.ethereumService.donateData(
-      selectedTokenAddr,
-      tokenTAmount,
-      this.state.deligatorAddr
-    )
-
-
-    console.log("************** submit form: ",selectedTokenAddr,
-    tokenTAmount,
-    this.state.deligatorAddr,
-    contributeData
-  )
-
-
+    this.onRequestFund()
   }
 
   onClose = (e) => {
@@ -120,7 +157,6 @@ class DetailForDao extends Component {
             <img src={content_project} alt=""/>
 
             <div className="d-flex mt-5 justify-content-between">
-              <button className="footer-btn" onClick={this.openModal}>DONATE NOW</button>
               <button className="footer-btn" onClick={this.openModal}>REQUEST FUND</button>
               <button className="footer-btn" onClick={this.openModal}>CLAIM</button>
             </div>
@@ -143,12 +179,14 @@ class DetailForDao extends Component {
           <div className="modal-body">
             <form>
               <div className="form-group">
-                <label>Select Token * </label>
+              <label>DAI* </label>
+
+                {/* <label>Select Token * </label>
                 <select className="form-control" onChange={this.onChangeToken.bind(this)}>
                   {tokensSupport.map((t, i) => (
                     <option value={t.symbol} key={i}>{t.name}</option>
                   ))}
-                </select>
+                </select> */}
               </div>
               <div className="form-group">
                 <label>Amount * </label>
@@ -156,15 +194,15 @@ class DetailForDao extends Component {
               </div>
               <div className="form-group">
                 <label>Time </label>
-                <input type="date" className="form-control" />
+                <input type="date" className="form-control" onChange={this.onChangeTime}/>
               </div>
               <div className="form-group">
                 <label>Destination </label>
-                <select className="form-control">
-                  <option value="">Vinmec</option>
-                  <option value="">CircleK</option>
-                  <option value="">QSmart</option>
-                  <option value="">Hai Ha</option>
+                <select className="form-control" onChange={this.onChangeDest}>
+                  <option value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6">Vinmec</option>
+                  <option value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6">CircleK</option>
+                  <option value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6">QSmart</option>
+                  <option value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6">Hai Ha</option>
                 </select>
               </div>
               <div className="text-center mt-4">
