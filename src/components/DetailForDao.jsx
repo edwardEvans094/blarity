@@ -110,7 +110,6 @@ class DetailForDao extends Component {
     if(!this.state.pendingId){
       const DAI = env.tokens['DAI']
       const tokenAmount = utils.toTWei(this.state.amount, DAI.decimal)
-      console.log("++++++++++++++++++", tokenAmount, this.state.destAddr, this.state.timeEnd)
       const dataMakeRequest = this.ethereumService.dataMakeRequestFund(tokenAmount, this.state.destAddr, this.state.timeEnd)
       const rawRequest = utils.createRawTx(0, this.campaignAddr, dataMakeRequest)
       if(window.web3){

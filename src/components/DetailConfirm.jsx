@@ -115,7 +115,7 @@ class Detail extends Component {
               this.state.pendingId && this.state.pendingId.info &&
                 <div className="form-approval">
                 <div className="title">Request withdraw</div>
-                <div className="d-inline-block mr-5">Amount: {utils.toToken(this.state.pendingId.info._amount)} ETH</div>
+                <div className="d-inline-block mr-5">Amount: {utils.toToken(this.state.pendingId.info._amount)} DAI</div>
                 
                 <div className="mt-1">Due Date: {new Date(+this.state.pendingId.info._endTime * 1000).toString()}</div>
                 <div className="mt-1">To Address: {this.state.pendingId.info._toAddress}</div>
