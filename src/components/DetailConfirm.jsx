@@ -46,8 +46,13 @@ class Detail extends Component {
   componentDidMount = async () => {
     const pendingId = await this.ethereumService.getPendingRequestId()
     if(pendingId){
+      const pendingInfo = await this.ethereumService.getPendingInfo(pendingId-1)
+      console.log("**************", pendingInfo)
       this.setState({
-        pendingId: pendingId -1
+        pendingId: {
+          id: pendingId -1,
+          info: pendingInfo
+        }
       })
     }
   }
@@ -105,16 +110,23 @@ class Detail extends Component {
             <div className="page-title">
               <span>Cơm có thịt</span>
             </div>
-            <div className="form-approval">
-              <div className="title">Request withdraw</div>
-              <div className="d-inline-block mr-5">Amount: 12 ETH</div>
-              <div className="d-inline-block">Due Date: 22 Jan 2019</div>
-              <div className="mt-1">Due Date: 22 Jan 2019</div>
-              <div className="group-btn">
-                <button className="h-btn mr-3" onClick={this.onConfirm(false)}>Reject</button>
-                <button className="h-btn h-blue" onClick={this.onConfirm(true)}>Accept</button>
+            {
+              this.state.pendingId && this.state.pendingId.info &&
+                <div className="form-approval">
+                <div className="title">Request withdraw</div>
+                <div className="d-inline-block mr-5">Amount: {utils.toToken(this.state.pendingId.info._amount)} ETH</div>
+                
+                <div className="mt-1">Due Date: {new Date(+this.state.pendingId.info._endTime * 1000).toString()}</div>
+                <div className="mt-1">To Address: {this.state.pendingId.info._toAddress}</div>
+                <div className="group-btn">
+                  <button className="h-btn mr-3" onClick={this.onConfirm(false)}>Reject</button>
+                  <button className="h-btn h-blue" onClick={this.onConfirm(true)}>Accept</button>
+                </div>
               </div>
-            </div>
+            }
+            
+
+
             <div className="d-flex justify-content-between balance-area">
               <div className="title">Current Balance: </div>
               <div>

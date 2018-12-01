@@ -51,8 +51,10 @@ class DetailForDao extends Component {
   componentDidMount = async () => {
     try {
       const pendingId = await this.ethereumService.getPendingRequestId()
+      
       if(pendingId){
         const statusPending = await this.ethereumService.getPendingStatus(pendingId - 1)
+        console.log('************************', statusPending)
         this.setState({
           pendingId: {
             id: pendingId -1,
@@ -161,8 +163,15 @@ class DetailForDao extends Component {
             <img src={content_project} alt=""/>
 
             <div className="d-flex mt-5 justify-content-between">
+            <button className="footer-btn" onClick={this.openModal}>DONATE</button>
+              { !this.state.pendingId && 
               <button className="footer-btn" onClick={this.openModal}>REQUEST FUND</button>
-              <button className="footer-btn" onClick={this.openModal}>CLAIM</button>
+              }
+              {
+                this.state.pendingId && this.state.pendingId.status && this.state.pendingId.status.positive == '1' &&
+                <button className="footer-btn" onClick={this.openModal}>CLAIM</button>
+              }
+              
             </div>
           </div>
         </div>

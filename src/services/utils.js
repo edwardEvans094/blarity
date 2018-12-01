@@ -63,3 +63,13 @@ export function createRawTx (value, to, data){
   }
 }
 
+export function toToken(number, decimal = 18) {
+  if (!decimal) decimal = 18
+  var bigNumber = new BigNumber(number)
+  if (bigNumber == 'NaN' || bigNumber == 'Infinity') {
+    return "0"
+  } else {
+    var weight = Math.pow(10, decimal)
+    return bigNumber.dividedBy(weight).toString()
+  }
+}

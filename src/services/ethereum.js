@@ -6,7 +6,7 @@ const env = require("../env")
 module.exports = class EthereumService {
   constructor(campainAddr){
     this.campainAddr = campainAddr
-    this.rpc = new Web3(new Web3.providers.HttpProvider(env.endpoints.ethScan, 3000));
+    this.rpc = new Web3(new Web3.providers.HttpProvider(env.endpoints.web3Provider, 3000));
     this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
     this.contract = new this.rpc.eth.Contract(constants.CONTRACT_ABI, this.campainAddr);
   }
@@ -75,8 +75,11 @@ module.exports = class EthereumService {
 
 
   getPendingRequestId(){
-    console.log(this.contract.methods.getLastestRequestFundID().call())
     return  this.contract.methods.getLastestRequestFundID().call()
+  }
+
+  getPendingInfo(requestID){
+    return  this.contract.methods.getRequestFundInfo(requestID).call()
   }
 
   getPendingStatus(requestId){
