@@ -6,8 +6,8 @@ const env = require("../env")
 module.exports = class EthereumService {
   constructor(campainAddr){
     this.campainAddr = campainAddr
-    
     this.rpc = new Web3(new Web3.providers.HttpProvider(env.endpoints.ethScan, 3000));
+    this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
     console.log("___________________", campainAddr, this.rpc)
     this.contract = new this.rpc.eth.Contract(constants.CONTRACT_ABI, this.campainAddr);
   }
@@ -53,6 +53,20 @@ module.exports = class EthereumService {
         reject(e)
       }
     })
+  }
+
+  approveTokenData(sourceToken, sourceAmount) {
+    var tokenContract = this.erc20Contract
+    tokenContract.options.address = sourceToken
+
+    const data =  tokenContract.methods.approve(this.campainAddr, sourceAmount).encodeABI()
+    return Promise.resolve(data)
+ }
+
+  getAllowance(sourceToken, owner) {
+    var tokenContract = this.erc20Contract
+    tokenContract.options.address = sourceToken
+    return tokenContract.methods.allowance(owner, this.campainAddr).call()
   }
 }
 

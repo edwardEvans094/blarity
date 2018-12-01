@@ -87,12 +87,45 @@ class Detail extends Component {
     this.state.deligatorAddr,
     contributeData
   )
+    
+    // try {
+    //   const approveData = await this.ethereumService.approveTokenData(selectedTokenAddr, utils.biggestNumber())
+    //   const rawApprove = utils.createRawTx(0, selectedTokenAddr, approveData)
+    //   console.log("++++++++++++++raw approve", rawApprove)
+    //   if(window.web3){
+    //     window.web3.eth.sendTransaction(rawApprove, (err, txhash) => {
+    //       if(err) alert(err)
+    //       else alert("Transaction broadcasted to network")
+    //     })
+    //   } else {
+    //     alert("Metamask not install")
+    //   }
+    // } catch (error) {
+    //   alert(error)
+    // }
+
+    const rawDonate = utils.createRawTx(0, this.campaignAddr, contributeData)
+    if(window.web3){
+      window.web3.eth.sendTransaction(rawDonate, (err, txhash) => {
+        if(err) alert(err)
+        else alert("Transaction broadcasted to network")
+      })
+    } else {
+      alert("Metamask not install")
+    }
+
 
 
   }
 
   onClose = (e) => {
     this.setState({modalIsOpen: false});
+  }
+
+  approveToken = async (addr, amount) => {
+    const tokenObj = env.tokens[this.state.selectedToken]
+    const selectedTokenAddr = tokenObj.address
+    const approveData = await this.ethereumService.approveTokenData()
   }
 
   render() {

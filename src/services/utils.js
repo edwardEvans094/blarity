@@ -21,3 +21,45 @@ export function toTWei(number, decimal = 18) {
   }
 }
 
+export function gWeiToEther(number) {
+  //console.log({number, decimal})
+  var bigNumber = new BigNumber(number.toString())
+  if (bigNumber == 'NaN' || bigNumber == 'Infinity') {
+    return number
+  } else {
+    return bigNumber.div(Math.pow(10, 9)).toFixed()
+  }
+}
+
+export function gWeiToWei(number) {
+  //console.log({number, decimal})
+  var bigNumber = new BigNumber(number.toString())
+  if (bigNumber == 'NaN' || bigNumber == 'Infinity') {
+    return number
+  } else {
+
+    return bigNumber.times(Math.pow(10, 9)).toFixed(0)
+  }
+}
+
+export function biggestNumber() {
+  var initNumber = new BigNumber(2)
+  return "0x" + (initNumber.pow(255).toString(16))
+}
+
+
+
+
+export function createRawTx (value, to, data){
+  const gasLimit = 5000000
+  const gasPrice = gWeiToWei(20)
+
+  return {
+    to: to,
+    value: toTWei(value),
+    gas: gasLimit,
+    gasPrice: gasPrice,
+    data: data
+  }
+}
+
