@@ -38,17 +38,32 @@ class Detail extends Component {
     this.ethereumService = new EthereumService(this.campaignAddr)
     console.log("______+++++++++++++++++", this.campaignAddr)
 
-    this.needApprove = true
+    this.needApprove = false
     this.state = {
       selectedToken: "ETH",
       amount: 0,
       deligatorAddr: "",
       modalIsOpen: false,
       txHash: '',
+      currentAddr: '',
+      allowance: 0
     }
   }
 
-  onChangeToken = (e) => {
+  componentDidMount(){
+    this.getCoinbase()
+  }
+
+  onChangeToken = async (e) => {
+    if(this.state.currentAddr){
+      const tokenObj = env.tokens[e.target.value]
+      const allowance = await this.ethereumService.getAllowance(tokenObj.address, this.state.currentAddr)
+      console.log(allowance)
+      this.setState({
+        allowance: +allowance
+      })
+    }
+    
     console.log(e.target.value)
     this.setState({
       selectedToken: e.target.value
@@ -68,9 +83,26 @@ class Detail extends Component {
       deligatorAddr: e.target.value
     })
   }
+  getCoinbase = () => {
+    web3.eth.getCoinbase((error, result) => {
+      if (error || !result) {
+        console.log(error)
+      }else{
+        console.log(result)
+        this.setState({
+          currentAddr: result
+        })
+        
+      }
+    })
+  }
+
 
   openModal = () =>  {
-    this.setState({modalIsOpen: true});
+    this.setState({
+      modalIsOpen: true,
+      txHash: null
+  });
   }
 
   onSubmit = async (e) => {
@@ -91,8 +123,8 @@ class Detail extends Component {
     contributeData
   )
     
-
-  if(this.needApprove){
+  console.log("+++++++++++", typeof this.state.allowance)
+  if(!this.state.allowance){
     try {
       const approveData = await this.ethereumService.approveTokenData(selectedTokenAddr, utils.biggestNumber())
       const rawApprove = utils.createRawTx(0, selectedTokenAddr, approveData)
@@ -100,7 +132,7 @@ class Detail extends Component {
       if(window.web3){
         window.web3.eth.sendTransaction(rawApprove, (err, txhash) => {
           if(err) alert(err)
-          else alert("Transaction broadcasted to network")
+          else alert("Transaction broadcasted to network " + txhash)
         })
       } else {
         alert("Metamask not install")
@@ -115,7 +147,7 @@ class Detail extends Component {
     if(window.web3){
       window.web3.eth.sendTransaction(rawDonate, (err, txhash) => {
         if(err) alert(err)
-        else this.state.setState({txHash: txhash})
+        else this.setState({txHash: txhash})
       })
     } else {
       alert("Metamask not install")
@@ -188,6 +220,14 @@ class Detail extends Component {
               </React.Fragment>
             ) : (
               <form>
+                {
+                  this.state.currentAddr && 
+                  <div className="form-group">
+                    <label>Current Address: {this.state.currentAddr} </label>
+                    
+                  </div>
+                }
+                
                 <div className="form-group">
                   <label>Select Token * </label>
                   <select className="form-control" onChange={this.onChangeToken.bind(this)}>

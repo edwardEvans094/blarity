@@ -140,7 +140,7 @@ class Detail extends Component {
         </div>
         <br />
         
-      <button onClick={this.openModal}>Open Modal</button>
+      {/* <button onClick={this.openModal}>Open Modal</button> */}
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
