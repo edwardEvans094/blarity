@@ -39,14 +39,26 @@ img{
   font-weight: 600;
   border-radius: 20px;
   padding: 5px 22px;
-  &:hover{
-    cursor: pointer;
-  }
-  &:focus{
-    outline: none;
-  }
   &.h-blue{
     background-color: #338bdd;
     color: #fff;
+  }
+}
+button{
+  cursor: pointer;
+  &:focus{
+    outline: none;
+  }
+}
+.ReactModal__Overlay{
+  background-color: rgba(0, 0, 0, 0.55)!important;
+  .modal-title{
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  .modal-body{
+    padding: 30px 50px 50px;
+    background-color: #f6fbff;
   }
 }

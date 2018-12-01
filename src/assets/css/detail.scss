@@ -22,7 +22,7 @@
 }
 .balance-area{
   margin-bottom: 30px;
-  .title{
+  .page-title{
     font-size: 16px;
   }
   .balance{
@@ -34,5 +34,44 @@
   .h-btn{
     border-color: #b0c3d3;
     color: #5a5e67;
+  }
+}
+
+.donate-area{
+  font-size: 16px;
+  .page-title{
+    max-width: calc(100% - 188px);
+  }
+  .target{
+    color: #ff8600;
+    font-size: 24px;
+  }
+  
+}
+
+.donate-btn{
+  background-color: #ff8600;
+  color: #fff;
+  box-shadow: 0px 5px 20px 3px #ff86006b;
+  padding: 12px 40px;
+  border-radius: 23px;
+  border-color: transparent;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.page-title{
+  font-size: 20px;
+  span{
+    position: relative;
+    display: inline-block;
+    &::after{
+      content: '';
+      display: block;
+      position: absolute;
+      width: 40%;
+      height: 3px;
+      background-color: #9ccfff;
+    }
   }
 }
