@@ -30,7 +30,7 @@ const customStyles = {
 
 Modal.setAppElement('#app')
 
-class Detail extends Component {
+class DetailForDao extends Component {
   constructor() {
     super()
 
@@ -107,9 +107,6 @@ class Detail extends Component {
                 <div className="page-title">
                   <span>Cơm có thịt</span>
                 </div>
-                <div>
-                  <button className="donate-btn" onClick={this.openModal}>DONATE NOW</button>
-                </div>
               </div>
               <div className="d-flex justify-content-between mb-2 align-items-baseline">
                 <div>Target:</div>
@@ -121,6 +118,12 @@ class Detail extends Component {
               </div>
             </div>
             <img src={content_project} alt=""/>
+
+            <div className="d-flex mt-5 justify-content-between">
+              <button className="footer-btn" onClick={this.openModal}>DONATE NOW</button>
+              <button className="footer-btn" onClick={this.openModal}>REQUEST FUND</button>
+              <button className="footer-btn" onClick={this.openModal}>CLAIM</button>
+            </div>
           </div>
         </div>
 
@@ -132,8 +135,8 @@ class Detail extends Component {
           contentLabel="Example Modal"
         >
           <div className="modal-title">
-            Donate
-            <button type="button" className="close" onClick={this.onClose}>
+            Request Fund
+            <button type="button" class="close" onClick={this.onClose}>
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -149,22 +152,20 @@ class Detail extends Component {
               </div>
               <div className="form-group">
                 <label>Amount * </label>
-                <input type="number" className="form-control" id="exampleInputPassword1" placeholder="Amount" onChange={this.onChangeAmount} />
+                <input type="number" className="form-control" onChange={this.onChangeAmount} />
               </div>
-              <label className="form-check-label">
-                Select delegator - <i className="text-muted">Optional</i>
-              </label>
-              <div className="form-group form-check mt-2">
-                <input type="checkbox" className="form-check-input" name="vehicle1" value="0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89" id="check_1" onChange={this.onChangeDeligator} checked={this.state.deligatorAddr == "0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89"}/>
-                <label className="form-check-label" htmlFor="check_1">Jenifer Apolo</label>
+              <div className="form-group">
+                <label>Time </label>
+                <input type="date" className="form-control" />
               </div>
-              <div className="form-group form-check">
-                <input className="form-check-input" type="checkbox" name="vehicle2" value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6" checked={this.state.deligatorAddr == "0xf01fA4910d500795B6A9F3e1667489023f65e2d6"} id="check_2" onChange={this.onChangeDeligator}/> 
-                <label className="form-check-label" htmlFor="check_2">Oliver Giroud</label>
-              </div>
-              <div className="form-group form-check">
-                <input className="form-check-input" type="checkbox" name="vehicle3" value="0x665d34f192f4940da4e859ff7768c0a80ed3ae10" id="check_3" checked={this.state.deligatorAddr == "0x665d34f192f4940da4e859ff7768c0a80ed3ae10"} onChange={this.onChangeDeligator}/>
-                <label className="form-check-label" htmlFor="check_3">Micheal Houbi</label>
+              <div className="form-group">
+                <label>Destination </label>
+                <select className="form-control">
+                  <option value="">Vinmec</option>
+                  <option value="">CircleK</option>
+                  <option value="">QSmart</option>
+                  <option value="">Hai Ha</option>
+                </select>
               </div>
               <div className="text-center mt-4">
                 <button className="donate-btn" onClick={this.onSubmit}>Submit</button>
@@ -179,4 +180,4 @@ class Detail extends Component {
 }
 
 
-export default Detail;
+export default DetailForDao;
