@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 
 import List from './components/List';
 import Detail from './components/Detail';
-// import Detail from './components/Detail';
+import DetailConfirm from './components/DetailConfirm';
 import Approve from './components/Approve';
 
 import './assets/css/app.scss';
@@ -22,7 +22,7 @@ const Routes = () => (
         <Route exact path="/" component={Home}/>
         <Route path="/list" component={List}/>
         <Route path="/detail" component={Detail}/>
-        <Route path="/detail-confirm" component={Detail}/>
+        <Route path="/detail-confirm" component={DetailConfirm}/>
         <Route path="/deligate" component={Approve}/>
       </div>
       <Footer />
