@@ -120,12 +120,22 @@ class DetailForDao extends Component {
       } else {
         alert("Metamask not install")
       }
-  
     }
   }
 
   onClaim = () => {
-
+    if(this.state.pendingId){
+      const dataClaim = this.ethereumService.dataClaimFund(this.state.pendingId)
+      const rawRequest = utils.createRawTx(0, this.campaignAddr, dataClaim)
+      if(window.web3){
+        window.web3.eth.sendTransaction(rawRequest, (err, txhash) => {
+          if(err) alert(err)
+          else alert("Transaction broadcasted to network")
+        })
+      } else {
+        alert("Metamask not install")
+      }
+    }
   }
 
   onSubmit = async (e) => {

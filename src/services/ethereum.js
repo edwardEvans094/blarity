@@ -93,6 +93,12 @@ module.exports = class EthereumService {
       amount, to, timeEnd
     ).encodeABI()
   }
+
+  dataClaimFund(requestId){
+    return this.contract.methods.creatorClaimFundTransfer(
+      requestId
+    ).encodeABI()
+  }
 }
 
 

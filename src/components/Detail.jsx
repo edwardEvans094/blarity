@@ -38,7 +38,7 @@ class Detail extends Component {
     this.ethereumService = new EthereumService(this.campaignAddr)
     console.log("______+++++++++++++++++", this.campaignAddr)
 
-    this.needApprove = false
+    this.needApprove = true
     this.state = {
       selectedToken: "ETH",
       amount: 0,
