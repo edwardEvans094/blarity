@@ -69,7 +69,7 @@ module.exports = class EthereumService {
   }
 
   voteData(requestId, isApprove){
-    const data = this.contract.methods.vote(requestId, isApprove)
+    const data = this.contract.methods.vote(requestId, isApprove).encodeABI()
     return Promise.resolve(data)
   }
 

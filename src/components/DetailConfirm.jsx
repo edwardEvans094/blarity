@@ -65,14 +65,15 @@ class Detail extends Component {
   }
 
   onConfirm = async (isApprove) => {
-    if(this.state.pendingId){
-      const voteData = await this.ethereumService.voteData(this.state.pendingId, isApprove)
+
+    if(this.state.pendingId != null) {
+      const voteData = await this.ethereumService.voteData(this.state.pendingId.id, isApprove)
       const rawVote = utils.createRawTx(0, this.campaignAddr, voteData)
 
       if(window.web3){
-        window.web3.eth.sendTransaction(rawDonate, (err, txhash) => {
+        window.web3.eth.sendTransaction(rawVote, (err, txhash) => {
           if(err) alert(err)
-          else alert("Transaction broadcasted to network")
+          else alert("Transaction broadcasted to network " + txhash)
         })
       } else {
         alert("Metamask not install")
@@ -119,8 +120,8 @@ class Detail extends Component {
                 <div className="mt-1">Due Date: {new Date(+this.state.pendingId.info._endTime * 1000).toString()}</div>
                 <div className="mt-1">To Address: {this.state.pendingId.info._toAddress}</div>
                 <div className="group-btn">
-                  <button className="h-btn mr-3" onClick={this.onConfirm(false)}>Reject</button>
-                  <button className="h-btn h-blue" onClick={this.onConfirm(true)}>Accept</button>
+                  <button className="h-btn mr-3" onClick={() => this.onConfirm(false)}>Reject</button>
+                  <button className="h-btn h-blue" onClick={() => this.onConfirm(true)}>Accept</button>
                 </div>
               </div>
             }
