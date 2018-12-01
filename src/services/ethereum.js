@@ -2,10 +2,10 @@ const Web3 = require('web3');
 const constants = require('./constants');
 const ethUtil = require('ethereumjs-util')
 const abiDecoder = require("abi-decoder")
-
+const env = require("../env")
 module.exports = class EthereumService {
   constructor(campainAddr){
-    this.rpc = new Web3(new Web3.providers.HttpProvider(constants.RPC_URL, 3000));
+    this.rpc = new Web3(new Web3.providers.HttpProvider(env.endpoints.ethScan, 3000));
     this.contract = new this.rpc.eth.Contract(constants.CONTRACT_ABI, campainAddr);
   }
 
