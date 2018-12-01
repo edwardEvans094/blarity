@@ -85,3 +85,11 @@
   font-weight: 600;
   color: #606f7c;
 }
+.hash{
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+  color: #000;
+  font-weight: 600;
+  text-decoration: underline;
+}

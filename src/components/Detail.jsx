@@ -43,7 +43,8 @@ class Detail extends Component {
       selectedToken: "ETH",
       amount: 0,
       deligatorAddr: "",
-      modalIsOpen: false
+      modalIsOpen: false,
+      txHash: '',
     }
   }
 
@@ -114,7 +115,7 @@ class Detail extends Component {
     if(window.web3){
       window.web3.eth.sendTransaction(rawDonate, (err, txhash) => {
         if(err) alert(err)
-        else alert("Transaction broadcasted to network")
+        else this.state.setState({txHash: txhash})
       })
     } else {
       alert("Metamask not install")
@@ -180,38 +181,45 @@ class Detail extends Component {
             </button>
           </div>
           <div className="modal-body">
-            <form>
-              <div className="form-group">
-                <label>Select Token * </label>
-                <select className="form-control" onChange={this.onChangeToken.bind(this)}>
-                  {tokensSupport.map((t, i) => (
-                    <option value={t.symbol} key={i}>{t.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Amount * </label>
-                <input type="number" className="form-control" id="exampleInputPassword1" placeholder="Amount" onChange={this.onChangeAmount} />
-              </div>
-              <label className="form-check-label">
-                Select delegator - <i className="text-muted">Optional</i>
-              </label>
-              <div className="form-group form-check mt-2">
-                <input type="checkbox" className="form-check-input" name="vehicle1" value="0x02ba31046726d98f652F839e5EB1d3d598B67EeD" id="check_1" onChange={this.onChangeDeligator} checked={this.state.deligatorAddr == "0x02ba31046726d98f652F839e5EB1d3d598B67EeD"}/>
-                <label className="form-check-label" htmlFor="check_1">Jenifer Apolo</label>
-              </div>
-              <div className="form-group form-check">
-                <input className="form-check-input" type="checkbox" name="vehicle2" value="0x02ba31046726d98f652F839e5EB1d3d598B67EeD" checked={this.state.deligatorAddr == "0x02ba31046726d98f652F839e5EB1d3d598B67EeD"} id="check_2" onChange={this.onChangeDeligator}/> 
-                <label className="form-check-label" htmlFor="check_2">Oliver Giroud</label>
-              </div>
-              <div className="form-group form-check">
-                <input className="form-check-input" type="checkbox" name="vehicle3" value="0x02ba31046726d98f652F839e5EB1d3d598B67EeD" id="check_3" checked={this.state.deligatorAddr == "0x02ba31046726d98f652F839e5EB1d3d598B67EeD"} onChange={this.onChangeDeligator}/>
-                <label className="form-check-label" htmlFor="check_3">Micheal Houbi</label>
-              </div>
-              <div className="text-center mt-4">
-                <button className="donate-btn" onClick={this.onSubmit}>Submit</button>
-              </div>
-            </form>
+            { this.state.txHash ? (
+              <React.Fragment>
+                <p>Transaction Hash:</p>
+                <a className="hash" href={"https://ropsten.etherscan.io/tx/" + this.state.txHash} target="_blank">{this.state.txHash}</a>
+              </React.Fragment>
+            ) : (
+              <form>
+                <div className="form-group">
+                  <label>Select Token * </label>
+                  <select className="form-control" onChange={this.onChangeToken.bind(this)}>
+                    {tokensSupport.map((t, i) => (
+                      <option value={t.symbol} key={i}>{t.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Amount * </label>
+                  <input type="number" className="form-control" id="exampleInputPassword1" placeholder="Amount" onChange={this.onChangeAmount} />
+                </div>
+                <label className="form-check-label">
+                  Select delegator - <i className="text-muted">Optional</i>
+                </label>
+                <div className="form-group form-check mt-2">
+                  <input type="checkbox" className="form-check-input" name="vehicle1" value="0x02ba31046726d98f652F839e5EB1d3d598B67EeD" id="check_1" onChange={this.onChangeDeligator} checked={this.state.deligatorAddr == "0x02ba31046726d98f652F839e5EB1d3d598B67EeD"}/>
+                  <label className="form-check-label" htmlFor="check_1">Jenifer Apolo</label>
+                </div>
+                <div className="form-group form-check">
+                  <input className="form-check-input" type="checkbox" name="vehicle2" value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6" checked={this.state.deligatorAddr == "0xf01fA4910d500795B6A9F3e1667489023f65e2d6"} id="check_2" onChange={this.onChangeDeligator}/> 
+                  <label className="form-check-label" htmlFor="check_2">Oliver Giroud</label>
+                </div>
+                <div className="form-group form-check">
+                  <input className="form-check-input" type="checkbox" name="vehicle3" value="0x665d34f192f4940da4e859ff7768c0a80ed3ae10" id="check_3" checked={this.state.deligatorAddr == "0x665d34f192f4940da4e859ff7768c0a80ed3ae10"} onChange={this.onChangeDeligator}/>
+                  <label className="form-check-label" htmlFor="check_3">Micheal Houbi</label>
+                </div>
+                <div className="text-center mt-4">
+                  <button className="donate-btn" onClick={this.onSubmit}>Submit</button>
+                </div>
+              </form>
+            )}
           </div>
         </Modal>
       </div>
