@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import env from "../env"
+import env from "../env";
+import breadcrumb from '../assets/img/breadcrumb.png';
+import title_project from '../assets/img/title_project.png';
+import content_project from '../assets/img/content_project.png';
+import right_sidebar from '../assets/img/right_sidebar.png';
+import '../assets/css/detail.scss';
 
 const tokensSupport = Object.keys(env.tokens).map(t => ({
   symbol: t,
@@ -46,18 +51,32 @@ class Detail extends Component {
   render() {
     return (
       <div>
-        This view show detail of campain
-
-    - normal user can donate for campain
-      input: amount, Address of user want to deligate
-
-      if( want revert money) show button revert money for user
-
-    - creator of campain
-      show button clain money, input amount
-      wait for DAO approve
-
-    <br />
+        <div className="page-content">
+          <img src={breadcrumb} alt=""/>
+          <img className="right-sidebar" src={right_sidebar} alt=""/>
+          <div className="article-content">
+            <img src={title_project} alt=""/>
+            <div className="form-approval">
+              <div className="title">Request withdraw</div>
+              <div className="d-inline-block mr-5">Amount: 12 ETH</div>
+              <div className="d-inline-block">Due Date: 22 Jan 2019</div>
+              <div className="mt-1">Due Date: 22 Jan 2019</div>
+              <div className="group-btn">
+                <button className="h-btn mr-3">Reject</button>
+                <button className="h-btn h-blue">Accept</button>
+              </div>
+            </div>
+            <div className="d-flex justify-content-between balance-area">
+              <div className="title">Current Balance: </div>
+              <div>
+                <div className="balance">16 ETH</div>
+                <button className="h-btn">History</button>
+              </div>
+            </div>
+            <img src={content_project} alt=""/>
+          </div>
+        </div>
+        <br />
         <form>
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">Select Token</label>
