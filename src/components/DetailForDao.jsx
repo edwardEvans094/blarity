@@ -49,17 +49,21 @@ class DetailForDao extends Component {
   }
 
   componentDidMount = async () => {
-    const pendingId = await this.ethereumService.getPendingRequestId()
-    console.log("++++++++++++", pendingId)
-    if(pendingId){
-      const statusPending = await this.ethereumService.getPendingStatus(pendingId - 1)
-      this.setState({
-        pendingId: {
-          id: pendingId -1,
-          status: statusPending
-        }
-      })
+    try {
+      const pendingId = await this.ethereumService.getPendingRequestId()
+      if(pendingId){
+        const statusPending = await this.ethereumService.getPendingStatus(pendingId - 1)
+        this.setState({
+          pendingId: {
+            id: pendingId -1,
+            status: statusPending
+          }
+        })
+      }
+    } catch (error) {
+      console.log(error)
     }
+    
   }
 
   onChangeToken = (e) => {

@@ -37,6 +37,8 @@ class Detail extends Component {
     this.campaignAddr = utils.getParameterByName('campaignAddr')
     this.ethereumService = new EthereumService(this.campaignAddr)
     console.log("______+++++++++++++++++", this.campaignAddr)
+
+    this.needApprove = false
     this.state = {
       selectedToken: "ETH",
       amount: 0,
@@ -88,22 +90,26 @@ class Detail extends Component {
     contributeData
   )
     
-    // try {
-    //   const approveData = await this.ethereumService.approveTokenData(selectedTokenAddr, utils.biggestNumber())
-    //   const rawApprove = utils.createRawTx(0, selectedTokenAddr, approveData)
-    //   console.log("++++++++++++++raw approve", rawApprove)
-    //   if(window.web3){
-    //     window.web3.eth.sendTransaction(rawApprove, (err, txhash) => {
-    //       if(err) alert(err)
-    //       else alert("Transaction broadcasted to network")
-    //     })
-    //   } else {
-    //     alert("Metamask not install")
-    //   }
-    // } catch (error) {
-    //   alert(error)
-    // }
 
+  if(this.needApprove){
+    try {
+      const approveData = await this.ethereumService.approveTokenData(selectedTokenAddr, utils.biggestNumber())
+      const rawApprove = utils.createRawTx(0, selectedTokenAddr, approveData)
+      console.log("++++++++++++++raw approve", rawApprove)
+      if(window.web3){
+        window.web3.eth.sendTransaction(rawApprove, (err, txhash) => {
+          if(err) alert(err)
+          else alert("Transaction broadcasted to network")
+        })
+      } else {
+        alert("Metamask not install")
+      }
+    } catch (error) {
+      alert(error)
+    }
+
+  } else {
+    
     const rawDonate = utils.createRawTx(0, this.campaignAddr, contributeData)
     if(window.web3){
       window.web3.eth.sendTransaction(rawDonate, (err, txhash) => {
@@ -113,6 +119,9 @@ class Detail extends Component {
     } else {
       alert("Metamask not install")
     }
+  }
+    
+    
 
 
 
@@ -188,15 +197,15 @@ class Detail extends Component {
                 Select delegator - <i className="text-muted">Optional</i>
               </label>
               <div className="form-group form-check mt-2">
-                <input type="checkbox" className="form-check-input" name="vehicle1" value="0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89" id="check_1" onChange={this.onChangeDeligator} checked={this.state.deligatorAddr == "0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89"}/>
+                <input type="checkbox" className="form-check-input" name="vehicle1" value="0x02ba31046726d98f652F839e5EB1d3d598B67EeD" id="check_1" onChange={this.onChangeDeligator} checked={this.state.deligatorAddr == "0x02ba31046726d98f652F839e5EB1d3d598B67EeD"}/>
                 <label className="form-check-label" htmlFor="check_1">Jenifer Apolo</label>
               </div>
               <div className="form-group form-check">
-                <input className="form-check-input" type="checkbox" name="vehicle2" value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6" checked={this.state.deligatorAddr == "0xf01fA4910d500795B6A9F3e1667489023f65e2d6"} id="check_2" onChange={this.onChangeDeligator}/> 
+                <input className="form-check-input" type="checkbox" name="vehicle2" value="0x02ba31046726d98f652F839e5EB1d3d598B67EeD" checked={this.state.deligatorAddr == "0x02ba31046726d98f652F839e5EB1d3d598B67EeD"} id="check_2" onChange={this.onChangeDeligator}/> 
                 <label className="form-check-label" htmlFor="check_2">Oliver Giroud</label>
               </div>
               <div className="form-group form-check">
-                <input className="form-check-input" type="checkbox" name="vehicle3" value="0x665d34f192f4940da4e859ff7768c0a80ed3ae10" id="check_3" checked={this.state.deligatorAddr == "0x665d34f192f4940da4e859ff7768c0a80ed3ae10"} onChange={this.onChangeDeligator}/>
+                <input className="form-check-input" type="checkbox" name="vehicle3" value="0x02ba31046726d98f652F839e5EB1d3d598B67EeD" id="check_3" checked={this.state.deligatorAddr == "0x02ba31046726d98f652F839e5EB1d3d598B67EeD"} onChange={this.onChangeDeligator}/>
                 <label className="form-check-label" htmlFor="check_3">Micheal Houbi</label>
               </div>
               <div className="text-center mt-4">

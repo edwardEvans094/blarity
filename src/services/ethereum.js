@@ -75,6 +75,7 @@ module.exports = class EthereumService {
 
 
   getPendingRequestId(){
+    console.log(this.contract.methods.getLastestRequestFundID().call())
     return  this.contract.methods.getLastestRequestFundID().call()
   }
 
