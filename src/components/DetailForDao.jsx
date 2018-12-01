@@ -51,14 +51,14 @@ class DetailForDao extends Component {
   componentDidMount = async () => {
     try {
       const pendingId = await this.ethereumService.getPendingRequestId()
-      
+      console.log("*************pemdimg", pendingId)
       if(pendingId){
-        const statusPending = await this.ethereumService.getPendingStatus(pendingId - 1)
-        console.log('************************', statusPending)
+        const infoPending = await this.ethereumService.getPendingInfo(pendingId - 1)
+        console.log('************************', infoPending)
         this.setState({
           pendingId: {
             id: pendingId -1,
-            status: statusPending
+            info: infoPending
           }
         })
       }
@@ -107,7 +107,7 @@ class DetailForDao extends Component {
   }
 
   onRequestFund = () => {
-    if(!this.state.pendingId){
+    if(!this.state.pendingId || (this.state.pendingId && this.state.pendingId.info._isEnded)){
       const DAI = env.tokens['DAI']
       const tokenAmount = utils.toTWei(this.state.amount, DAI.decimal)
       const dataMakeRequest = this.ethereumService.dataMakeRequestFund(tokenAmount, this.state.destAddr, this.state.timeEnd)
@@ -173,7 +173,7 @@ class DetailForDao extends Component {
 
             <div className="d-flex mt-5 justify-content-between">
             <button className="footer-btn" onClick={this.openModal}>DONATE</button>
-              { !this.state.pendingId && 
+              { (!this.state.pendingId || (this.state.pendingId && this.state.pendingId.info._isEnded)) &&
               <button className="footer-btn" onClick={this.openModal}>REQUEST FUND</button>
               }
               {
