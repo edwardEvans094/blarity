@@ -4,6 +4,7 @@ module.exports = {
     "ethScan": "https://etherscan.io/",
     "getRate": "https://production-cache.kyber.network/getRate"
   },
+  "network": "0x818E6FECD516Ecc3849DAf6845e3EC868087B755",
   "tokens": {
     "ETH": {
       "name": "Ethereum",

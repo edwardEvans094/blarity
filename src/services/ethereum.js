@@ -5,8 +5,11 @@ const abiDecoder = require("abi-decoder")
 const env = require("../env")
 module.exports = class EthereumService {
   constructor(campainAddr){
+    this.campainAddr = campainAddr
+    
     this.rpc = new Web3(new Web3.providers.HttpProvider(env.endpoints.ethScan, 3000));
-    this.contract = new this.rpc.eth.Contract(constants.CONTRACT_ABI, campainAddr);
+    console.log("___________________", campainAddr, this.rpc)
+    this.contract = new this.rpc.eth.Contract(constants.CONTRACT_ABI, this.campainAddr);
   }
 
   version() {
@@ -14,7 +17,7 @@ module.exports = class EthereumService {
   }
 
   getCampaignDetail() {
-    return this.networkContract.methods.getCampagnDetail().call();
+    return this.contract.methods.getCampagnDetail().call();
   }
 
   sendRawTransaction(tx) {
@@ -40,13 +43,9 @@ module.exports = class EthereumService {
   donateData(tokenAddr, amountTwei, delegatorAddr){
     return new Promise((resolve, reject) => {
       try {
-        const kyberProxyAddr = ""
-        const maxDestAmount = ""
-        const minConversionRate = ""
-        const walletId = null
-        var data = this.ieoTokenContract.methods.contribute(
-          kyberProxyAddr, tokenAddr, amountTwei, delegatorAddr, 
-          maxDestAmount, minConversionRate, walletId
+        const networkAddr = env.network
+        var data = this.contract.methods.contribute(
+          networkAddr, tokenAddr, amountTwei, delegatorAddr
         ).encodeABI()
         resolve(data)
       } catch (e) {

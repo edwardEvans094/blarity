@@ -3,6 +3,7 @@ module.exports = {
     "web3Provider": "https://ropsten.infura.io",
     "ethScan": "https://ropsten.etherscan.io/"
   },
+  "network": "0x818E6FECD516Ecc3849DAf6845e3EC868087B755",
   "tokens": {
     "ETH": {
       "name": "Ethereum",

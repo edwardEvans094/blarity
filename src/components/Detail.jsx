@@ -7,7 +7,7 @@ import title_project from '../assets/img/title_project.png';
 import content_project from '../assets/img/content_project.png';
 import right_sidebar from '../assets/img/right_sidebar.png';
 import '../assets/css/detail.scss';
-
+import EthereumService from "../services/ethereum"
 const tokensSupport = Object.keys(env.tokens).map(t => ({
   symbol: t,
   name: env.tokens[t].name,
@@ -32,9 +32,10 @@ class Detail extends Component {
     super()
 
     this.campaignAddr = utils.getParameterByName('campaignAddr')
+    this.ethereumService = new EthereumService(this.campaignAddr)
     console.log("______+++++++++++++++++", this.campaignAddr)
     this.state = {
-      tokenAddr: "",
+      selectedToken: "ETH",
       amount: 0,
       deligatorAddr: "",
       modalIsOpen: false
@@ -44,7 +45,7 @@ class Detail extends Component {
   onChangeToken = (e) => {
     console.log(e.target.value)
     this.setState({
-      tokenAddr: e.target.value
+      selectedToken: e.target.value
     })
   }
 
@@ -66,9 +67,25 @@ class Detail extends Component {
     this.setState({modalIsOpen: true});
   }
 
-  onSubmit = (e) => {
+  onSubmit = async (e) => {
     e.preventDefault()
-    console.log("************** submit form: ", this.state.tokenAddr, this.state.amount, this.state.deligatorAddr)
+    const tokenObj = env.tokens[this.state.selectedToken]
+    const selectedTokenAddr = tokenObj.address
+    const tokenTAmount = utils.toTWei(this.state.amount, tokenObj.decimal)
+    const contributeData = await this.ethereumService.donateData(
+      selectedTokenAddr,
+      tokenTAmount,
+      this.state.deligatorAddr
+    )
+
+
+    console.log("************** submit form: ",selectedTokenAddr,
+    tokenTAmount,
+    this.state.deligatorAddr,
+    contributeData
+  )
+
+
   }
 
   onClose = (e) => {
@@ -118,7 +135,7 @@ class Detail extends Component {
             <label htmlFor="exampleInputEmail1">Select Token</label>
             <select onChange={this.onChangeToken.bind(this)}>
               {tokensSupport.map((t, i) => (
-                <option value={t.address} key={i}>{t.name}</option>
+                <option value={t.symbol} key={i}>{t.name}</option>
               ))}
             </select>
           </div>
@@ -129,9 +146,9 @@ class Detail extends Component {
           <div className="form-group form-check">
             <label className="form-check-label" htmlFor="exampleCheck1">Select delegator</label>
             <div className="input-group mb-3">
-              <input type="checkbox" name="vehicle1" value="Bike" checked={this.state.deligatorAddr == "Bike"} onChange={this.onChangeDeligator}/> I have a bike<br />
-              <input type="checkbox" name="vehicle2" value="Car" checked={this.state.deligatorAddr == "Car"} onChange={this.onChangeDeligator}/> I have a car<br />
-              <input type="checkbox" name="vehicle3" value="Boat" checked={this.state.deligatorAddr == "Boat"} onChange={this.onChangeDeligator}/> I have a boat<br />
+              <input type="checkbox" name="vehicle1" value="0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89" checked={this.state.deligatorAddr == "0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89"} onChange={this.onChangeDeligator}/>Creator<br />
+              <input type="checkbox" name="vehicle2" value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6" checked={this.state.deligatorAddr == "0xf01fA4910d500795B6A9F3e1667489023f65e2d6"} onChange={this.onChangeDeligator}/> Blarity foundation<br />
+              <input type="checkbox" name="vehicle3" value="0x665d34f192f4940da4e859ff7768c0a80ed3ae10" checked={this.state.deligatorAddr == "0x665d34f192f4940da4e859ff7768c0a80ed3ae10"} onChange={this.onChangeDeligator}/>Some one<br />
             </div>
           </div>
           <button className="btn btn-primary" onClick={this.onSubmit}>Submit</button>
