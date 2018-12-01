@@ -82,7 +82,9 @@ class Detail extends Component {
           <img src={breadcrumb} alt=""/>
           <img className="right-sidebar" src={right_sidebar} alt=""/>
           <div className="article-content">
-            <img src={title_project} alt=""/>
+            <div className="page-title">
+              <span>Cơm có thịt</span>
+            </div>
             <div className="form-approval">
               <div className="title">Request withdraw</div>
               <div className="d-inline-block mr-5">Amount: 12 ETH</div>

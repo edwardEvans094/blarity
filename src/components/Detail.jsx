@@ -16,12 +16,15 @@ const tokensSupport = Object.keys(env.tokens).map(t => ({
 
 const customStyles = {
   content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    top         : '50%',
+    left        : '50%',
+    right       : 'auto',
+    bottom      : 'auto',
+    marginRight : '-50%',
+    transform   : 'translate(-50%, -50%)',
+    width       : '80%',
+    maxWidth    : '500px',
+    padding     : 0,
   }
 };
 
@@ -99,30 +102,28 @@ class Detail extends Component {
           <img src={breadcrumb} alt=""/>
           <img className="right-sidebar" src={right_sidebar} alt=""/>
           <div className="article-content">
-            <img src={title_project} alt=""/>
-            <div className="form-approval">
-              <div className="title">Request withdraw</div>
-              <div className="d-inline-block mr-5">Amount: 12 ETH</div>
-              <div className="d-inline-block">Due Date: 22 Jan 2019</div>
-              <div className="mt-1">Due Date: 22 Jan 2019</div>
-              <div className="group-btn">
-                <button className="h-btn mr-3">Reject</button>
-                <button className="h-btn h-blue">Accept</button>
+            <div className="donate-area">
+              <div className="d-flex justify-content-between mb-4">
+                <div className="page-title">
+                  <span>Cơm có thịt</span>
+                </div>
+                <div>
+                  <button className="donate-btn" onClick={this.openModal}>DONATE NOW</button>
+                </div>
               </div>
-            </div>
-            <div className="d-flex justify-content-between balance-area">
-              <div className="title">Current Balance: </div>
-              <div>
-                <div className="balance">16 ETH</div>
-                <button className="h-btn">History</button>
+              <div className="d-flex justify-content-between mb-2 align-items-baseline">
+                <div>Target:</div>
+                <div className="target">100 ETH</div>
+              </div>
+              <div className="d-flex justify-content-between mb-3">
+                <div>Deadline:</div>
+                <div>27 January 2019</div>
               </div>
             </div>
             <img src={content_project} alt=""/>
           </div>
         </div>
-        <br />
-        
-      <button onClick={this.openModal}>Open Modal</button>
+
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -130,31 +131,46 @@ class Detail extends Component {
           style={customStyles}
           contentLabel="Example Modal"
         >
-        <form>
-          <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Select Token</label>
-            <select onChange={this.onChangeToken.bind(this)}>
-              {tokensSupport.map((t, i) => (
-                <option value={t.symbol} key={i}>{t.name}</option>
-              ))}
-            </select>
+          <div className="modal-title">
+            Donate
+            <button type="button" class="close" onClick={this.onClose}>
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Amount</label>
-            <input type="number" className="form-control" id="exampleInputPassword1" placeholder="Amount" onChange={this.onChangeAmount} />
+          <div className="modal-body">
+            <form>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">Select Token * </label>
+                <select className="form-control" onChange={this.onChangeToken.bind(this)}>
+                  {tokensSupport.map((t, i) => (
+                    <option value={t.symbol} key={i}>{t.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputPassword1">Amount * </label>
+                <input type="number" className="form-control" id="exampleInputPassword1" placeholder="Amount" onChange={this.onChangeAmount} />
+              </div>
+              <label className="form-check-label" htmlFor="exampleCheck1">
+                Select delegator - <i className="text-muted">Optional</i>
+              </label>
+              <div class="form-group form-check mt-2">
+                <input type="checkbox" class="form-check-input" name="vehicle1" value="0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89" id="check_1" onChange={this.onChangeDeligator} checked={this.state.deligatorAddr == "0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89"}/>
+                <label class="form-check-label" for="check_1">Jenifer Apolo</label>
+              </div>
+              <div class="form-group form-check">
+                <input className="form-check-input" type="checkbox" name="vehicle2" value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6" checked={this.state.deligatorAddr == "0xf01fA4910d500795B6A9F3e1667489023f65e2d6"} id="check_2" onChange={this.onChangeDeligator}/> 
+                <label class="form-check-label" for="check_2">Oliver Giroud</label>
+              </div>
+              <div class="form-group form-check">
+                <input className="form-check-input" type="checkbox" name="vehicle3" value="0x665d34f192f4940da4e859ff7768c0a80ed3ae10" id="check_3" checked={this.state.deligatorAddr == "0x665d34f192f4940da4e859ff7768c0a80ed3ae10"} onChange={this.onChangeDeligator}/>
+                <label class="form-check-label" for="check_3">Micheal Houbi</label>
+              </div>
+              <div className="text-center mt-4">
+                <button className="donate-btn" onClick={this.onSubmit}>Submit</button>
+              </div>
+            </form>
           </div>
-          <div className="form-group form-check">
-            <label className="form-check-label" htmlFor="exampleCheck1">Select delegator</label>
-            <div className="input-group mb-3">
-              <input type="checkbox" name="vehicle1" value="0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89" checked={this.state.deligatorAddr == "0xf22ac800dfed58cb49a2a4f64f2b040b47e52d89"} onChange={this.onChangeDeligator}/>Creator<br />
-              <input type="checkbox" name="vehicle2" value="0xf01fA4910d500795B6A9F3e1667489023f65e2d6" checked={this.state.deligatorAddr == "0xf01fA4910d500795B6A9F3e1667489023f65e2d6"} onChange={this.onChangeDeligator}/> Blarity foundation<br />
-              <input type="checkbox" name="vehicle3" value="0x665d34f192f4940da4e859ff7768c0a80ed3ae10" checked={this.state.deligatorAddr == "0x665d34f192f4940da4e859ff7768c0a80ed3ae10"} onChange={this.onChangeDeligator}/>Some one<br />
-            </div>
-          </div>
-          <button className="btn btn-primary" onClick={this.onSubmit}>Submit</button>
-          <button className="btn" onClick={this.onClose}>close</button>
-        </form>
-
         </Modal>
       </div>
     )
