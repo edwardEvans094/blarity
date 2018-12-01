@@ -55,6 +55,11 @@ class Detail extends Component {
   }
 
   onChangeToken = async (e) => {
+    console.log("++++++++++++++++++*******", e.target.value)
+    this.setState({
+      selectedToken: e.target.value
+    })
+    
     if(this.state.currentAddr){
       const tokenObj = env.tokens[e.target.value]
       const allowance = await this.ethereumService.getAllowance(tokenObj.address, this.state.currentAddr)
@@ -64,10 +69,7 @@ class Detail extends Component {
       })
     }
     
-    console.log(e.target.value)
-    this.setState({
-      selectedToken: e.target.value
-    })
+    
   }
 
   onChangeAmount = (e) => {

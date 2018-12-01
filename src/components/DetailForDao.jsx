@@ -125,7 +125,8 @@ class DetailForDao extends Component {
 
   onClaim = () => {
     if(this.state.pendingId){
-      const dataClaim = this.ethereumService.dataClaimFund(this.state.pendingId)
+      console.log("***************", this.state.pendingId)
+      const dataClaim = this.ethereumService.dataClaimFund(this.state.pendingId.id)
       const rawRequest = utils.createRawTx(0, this.campaignAddr, dataClaim)
       if(window.web3){
         window.web3.eth.sendTransaction(rawRequest, (err, txhash) => {
@@ -177,8 +178,8 @@ class DetailForDao extends Component {
               <button className="footer-btn" onClick={this.openModal}>REQUEST FUND</button>
               }
               {
-                this.state.pendingId && this.state.pendingId.status && this.state.pendingId.status.positive == '1' &&
-                <button className="footer-btn" onClick={this.openModal}>CLAIM</button>
+                this.state.pendingId && this.state.pendingId.info && !this.state.pendingId.info._isEnded  &&
+                <button className="footer-btn" onClick={this.onClaim}>CLAIM</button>
               }
               
             </div>
