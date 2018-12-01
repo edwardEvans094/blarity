@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import env from "../env"
+import * as utils from "../services/utils"
+import Modal from 'react-modal';
 
 const tokensSupport = Object.keys(env.tokens).map(t => ({
   symbol: t,
@@ -7,13 +9,30 @@ const tokensSupport = Object.keys(env.tokens).map(t => ({
   address: env.tokens[t].address
 }))
 
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
+
+Modal.setAppElement('#app')
+
 class Detail extends Component {
   constructor() {
     super()
+
+    this.campaignAddr = utils.getParameterByName('campaignAddr')
+    console.log("______+++++++++++++++++", this.campaignAddr)
     this.state = {
       tokenAddr: "",
       amount: 0,
-      deligatorAddr: ""
+      deligatorAddr: "",
+      modalIsOpen: false
     }
   }
 
@@ -38,9 +57,17 @@ class Detail extends Component {
     })
   }
 
+  openModal = () =>  {
+    this.setState({modalIsOpen: true});
+  }
+
   onSubmit = (e) => {
     e.preventDefault()
     console.log("************** submit form: ", this.state.tokenAddr, this.state.amount, this.state.deligatorAddr)
+  }
+
+  onClose = (e) => {
+    this.setState({modalIsOpen: false});
   }
 
   render() {
@@ -58,6 +85,15 @@ class Detail extends Component {
       wait for DAO approve
 
     <br />
+    <button onClick={this.openModal}>Open Modal</button>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+
         <form>
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">Select Token</label>
@@ -80,7 +116,10 @@ class Detail extends Component {
             </div>
           </div>
           <button className="btn btn-primary" onClick={this.onSubmit}>Submit</button>
+          <button className="btn" onClick={this.onClose}>close</button>
         </form>
+
+        </Modal>
       </div>
     )
   }

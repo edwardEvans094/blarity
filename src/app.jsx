@@ -6,7 +6,7 @@ import 'normalize.css';
 import 'styles/index.scss';
 
 const App = () => (
-  <div className='App'>
+  <div className='App' id="blarity-app">
     <Navigation/>
     <Footer />
   </div>
