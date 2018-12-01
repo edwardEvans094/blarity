@@ -6,11 +6,6 @@ import { persistor, store } from "./store"
 
 import Routes from './routes'
 
-// import 'normalize.css';
-import './assets/css/app.scss';
-// import 'react-dates/initialize'
-
-
 ReactDOM.render(
   <PersistGate persistor={persistor}>
     <Provider store={store}>

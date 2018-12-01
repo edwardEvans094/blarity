@@ -11,7 +11,7 @@ import List from './components/List';
 import Detail from './components/Detail';
 import Approve from './components/Approve';
 
-import 'styles/index.scss';
+import './assets/css/app.scss';
 
 const Routes = () => (
   <Router>
