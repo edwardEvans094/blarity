@@ -18,7 +18,7 @@ This is simple mvp version for state of chain hackathon Ho Chi Minh city, 02/11/
 
 ### Features
 
-* 3 user roles: Creator, Delogator, Normal User
+* 3 user roles: Creator, Deligator, Normal User
 * Normal user can donate for project with any tokens, any where
 * Creator can make request fund to smart contract
 * Deligator can vote to release fund to supplier
