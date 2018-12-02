@@ -1,10 +1,9 @@
-[![CircleCI](https://circleci.com/gh/alicoding/react-webpack-babel/tree/master.svg?style=svg)](https://circleci.com/gh/alicoding/react-webpack-babel/tree/master)
 
 <p align="center">
-    <h3 align="center">Simple React Webpack Babel Starter Kit<br></h3>
+    <h3 align="center">Blarity MVP<br></h3>
 </p>
 
-Tired of complicated starters with 200MB of dependencies which are hard to understand and modify?
+This is simple mvp version for state of chain hackathon Ho Chi Minh city, 02/11/2018
 
 ### What were using
 
@@ -19,11 +18,11 @@ Tired of complicated starters with 200MB of dependencies which are hard to under
 
 ### Features
 
-* Simple src/index.jsx and src/index.css (local module css).
-* Webpack configuration for development (with hot reloading) and production (with minification).
-* CSS module loading, so you can include your css by ```import styles from './path/to.css';```.
-* Both js(x) and css hot loaded during development.
-* [Webpack Dashboard Plugin](https://github.com/FormidableLabs/webpack-dashboard) on dev server.
+* 3 user roles: Creator, Delogator, Normal User
+* Normal user can donate for project with any tokens, any where
+* Creator can make request fund to smart contract
+* Deligator can vote to release fund to supplier
+* Creator can claim fund to suplier
 
 ### To run
 
@@ -31,7 +30,7 @@ Tired of complicated starters with 200MB of dependencies which are hard to under
 * Fork and clone the project:
 
 ```
-git clone https://github.com/alicoding/react-webpack-babel.git
+git clone git@github.com:edwardEvans094/blarity.git
 ```
 
 * Then install the dependencies:
