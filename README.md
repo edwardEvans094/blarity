@@ -18,11 +18,11 @@ This is simple mvp version for 'state of chain' hackathon Ho Chi Minh city, 02/1
 
 ### Features
 
-* 3 user roles: Creator, Deligator, Normal User
+* 4 user roles: Creator, Deligator, Normal User, Supplier
 * Normal user can donate for project with any tokens, any where, convert to stable token. We are using Kyber.Network protocol, wrapped in our contract.
 * Creator can make request fund to smart contract
 * Deligator can vote to release fund to supplier
-* Creator can claim fund to suplier
+* Creator can claim fund to supplier
 
 ### To run
 
