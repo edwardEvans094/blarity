@@ -3,7 +3,7 @@
     <h3 align="center">Blarity MVP<br></h3>
 </p>
 
-This is simple mvp version for state of chain hackathon Ho Chi Minh city, 02/11/2018
+This is simple mvp version for 'state of chain' hackathon Ho Chi Minh city, 02/11/2018
 
 ### What were using
 
