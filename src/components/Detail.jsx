@@ -46,7 +46,7 @@ class Detail extends Component {
       modalIsOpen: false,
       txHash: '',
       currentAddr: '',
-      allowance: 0
+      allowance: 99999999
     }
   }
 
@@ -59,13 +59,17 @@ class Detail extends Component {
     this.setState({
       selectedToken: e.target.value
     })
-    
-    if(this.state.currentAddr){
+
+    if(this.state.currentAddr && e.target.value !== 'ETH'){
       const tokenObj = env.tokens[e.target.value]
       const allowance = await this.ethereumService.getAllowance(tokenObj.address, this.state.currentAddr)
       console.log(allowance)
       this.setState({
         allowance: +allowance
+      })
+    } else {
+      this.setState({
+        allowance: 99999999
       })
     }
     
@@ -117,15 +121,8 @@ class Detail extends Component {
       tokenTAmount,
       this.state.deligatorAddr
     )
-
-
-    console.log("************** submit form: ",selectedTokenAddr,
-    tokenTAmount,
-    this.state.deligatorAddr,
-    contributeData
-  )
     
-  console.log("+++++++++++", typeof this.state.allowance)
+  console.log("+++++++++++", this.state.allowance)
   if(!this.state.allowance){
     try {
       const approveData = await this.ethereumService.approveTokenData(selectedTokenAddr, utils.biggestNumber())
@@ -145,7 +142,12 @@ class Detail extends Component {
 
   } else {
     
-    const rawDonate = utils.createRawTx(0, this.campaignAddr, contributeData)
+    let rawDonate = ''
+    if(this.state.selectedToken !== 'ETH'){
+      rawDonate = utils.createRawTx(0, this.campaignAddr, contributeData)
+    } else {
+      rawDonate = utils.createRawTx(this.state.amount, this.campaignAddr, contributeData)
+    }
     if(window.web3){
       window.web3.eth.sendTransaction(rawDonate, (err, txhash) => {
         if(err) alert(err)

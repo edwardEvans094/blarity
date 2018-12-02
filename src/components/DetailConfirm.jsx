@@ -44,8 +44,16 @@ class Detail extends Component {
   }
 
   componentDidMount = async () => {
+    await this.getPending()
+
+    this.intervalGetPendingConfirm = setInterval(async () => {
+      await this.getPending()
+    }, 5000)
+  }
+
+  getPending = async () => {
     const pendingId = await this.ethereumService.getPendingRequestId()
-    if(pendingId){
+    if(+pendingId){
       const pendingInfo = await this.ethereumService.getPendingInfo(pendingId-1)
       console.log("**************", pendingInfo)
       this.setState({
@@ -138,7 +146,7 @@ class Detail extends Component {
             <img src={content_project} alt=""/>
           </div>
         </div>
-        <br />
+        {/* <br /> */}
         
       {/* <button onClick={this.openModal}>Open Modal</button> */}
         <Modal

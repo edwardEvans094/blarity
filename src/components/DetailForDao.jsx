@@ -49,10 +49,20 @@ class DetailForDao extends Component {
   }
 
   componentDidMount = async () => {
+    await this.getPending()
+
+    this.intervalFetchPendingDao = setInterval(async () => {
+      await this.getPending()
+    }, 5000)
+    
+  }
+
+  getPending = async () => {
     try {
       const pendingId = await this.ethereumService.getPendingRequestId()
       console.log("*************pemdimg", pendingId)
-      if(pendingId){
+      if(+pendingId){
+        console.log("_________", typeof pendingId)
         const infoPending = await this.ethereumService.getPendingInfo(pendingId - 1)
         console.log('************************', infoPending)
         this.setState({
@@ -65,7 +75,6 @@ class DetailForDao extends Component {
     } catch (error) {
       console.log(error)
     }
-    
   }
 
   onChangeToken = (e) => {
